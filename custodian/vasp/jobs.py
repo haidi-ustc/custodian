@@ -282,6 +282,27 @@ class VaspJob(Job):
             os.remove("continue.json")
 
     @classmethod
+    def single_relaxation_run(
+        cls,
+        vasp_cmd,
+        auto_npar=True,
+        ediffg=-0.01,
+        auto_continue=False,
+        settings_overide = None
+    ):
+        if ediffg:
+            incar_update["EDIFFG"] = ediffg
+        return [
+            VaspJob(
+                vasp_cmd,
+                final=False,
+                suffix=".relax",
+                auto_npar=auto_npar,
+                auto_continue=auto_continue,
+                settings_override=settings_overide,
+            )]
+
+    @classmethod
     def double_relaxation_run(
         cls,
         vasp_cmd,
